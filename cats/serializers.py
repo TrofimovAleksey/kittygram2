@@ -35,6 +35,13 @@ class CatSerializer(serializers.ModelSerializer):
                   'age')
         read_only_fields = ('owner',)
 
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Cat.objects.all(),
+                fields=('name', 'owner')
+            )
+        ]
+
     def validate(self, data):
         if data['color'] == data['name']:
             raise serializers.ValidationError(
